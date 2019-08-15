@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Document</title>
+	</head>
+	<body>
+		<script>
+			// ToDo List
+
+			var toDoList = {
+			
+
+				notes : [],
+
+				newTask : function(){
+
+					var userInfoForDoing = prompt('Какая задача?'); 
+
+					var check = this.notes.findIndex(function(item) {
+						
+							return item.toDo === userInfoForDoing;
+						
+					})
+
+					if(check >= 0) {
+
+						alert('Такая задача уже есть!!')
+					} else {
+						var currentDate = new Date;
+
+						currentDate = currentDate.getDate() + '/' +currentDate.getMonth() + '/' + currentDate.getFullYear();
+
+						var getRandomId = Number(Math.random().toString().slice(2,10));
+
+						var currentTask = {
+							title : currentDate,
+							toDo : userInfoForDoing,
+							isDone : false,
+							id : getRandomId
+						}
+
+						this.notes.push(currentTask);
+					}
+		
+				},
+
+				deleteTask : function(id){
+					var taskIndex = this.notes.findIndex(function(task) {
+						if(task.id === id) {
+							return task;
+						}
+					})
+
+					this.notes.splice(taskIndex, 1);
+				},
+
+				correctTask : function(id) {
+					var taskIndex = this.notes.findIndex(function(task) {
+						if(task.id === id) {
+							return task;
+						}
+					});
+
+					if(confirm('редактируем?')) {
+						var changeTask = prompt('на что меняем??');
+						this.notes[taskIndex].toDo = changeTask;
+					}
+				},
+
+				ifDoneTask : function(id) {
+					var taskIndex = this.notes.findIndex(function(task) {
+						if(task.id === id) {
+							return task;
+						}
+					});
+
+					this.notes[taskIndex].isDone = !this.notes[taskIndex].isDone;
+				},
+
+				showTasks : function() {
+					var totalTasks = this.notes.length;
+					var totalDoneTasks = this.notes.filter(function(task){
+						if(task.isDone === true){
+							return task;
+						}
+					}).length
+
+					return 'Всего заданий :' + totalTasks + ' ,\n' + ' Выполнено заданий : ' + totalDoneTasks + ' .Осталось выполнить : ' + (totalTasks - totalDoneTasks);
+				},
+
+				sortTasksByName : function() {
+					var sort = this.notes.sort(function(next , prev) {
+						if(next.toDo.toUpperCase() > prev.toDo.toUpperCase()) return 1;
+						if (next.toDo.toUpperCase() === prev.toDo.toUpperCase()) return 0;
+						if(next.toDo.toUpperCase() < prev.toDo.toUpperCase()) return -1 ;
+					})
+
+					return sort;
+				},
+
+				sortTasksByDone : function() {
+					var sort = this.notes.sort(function(next , prev) {
+						if(next.isDone > prev.isDone) return -1;
+						if (next.isDone === prev.isDone) return 0;
+						if(next.isDone < prev.isDone) return 1 ;
+					})
+ 
+					return sort;
+				}
+
+			};
+			
+			Object.freeze(toDoList); // Пытался этот метод прописать внутри обьекта,не смог и не нашел как! Это возможно?
+
+
+			
+
+			console.log(toDoList);
+
+			
+		</script>
+		
+	</body>
+</html>
